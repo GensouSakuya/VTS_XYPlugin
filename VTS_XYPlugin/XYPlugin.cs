@@ -186,19 +186,31 @@ namespace VTS_XYPlugin
             DropItemDataBaseWatcher.OnFileModified += OnDropItemConfigFileModified;
             FileHelper.LoadGlobalConfig();
             FileHelper.LoadDropItemConfig();
-            if(XYPlugin.Instance.GlobalConfig.BilibiliDanmakuSource == VTS_XYPlugin_Common.Enum.BilibiliDanmakuSource.XYDanMuShare)
+
+            try
             {
-                Bilibili.Register<XYDanMuShare>();
+                if (XYPlugin.Instance.GlobalConfig.BilibiliDanmakuSource == VTS_XYPlugin_Common.Enum.BilibiliDanmakuSource.XYDanMuShare)
+                {
+                    XYLog.LogMessage("注册XYDanMuShare弹幕机");
+                    Bilibili.Register<XYDanMuShare>();
+                }
+                else
+                {
+                    XYLog.LogMessage("注册Blivechat弹幕机");
+                    Bilibili.Register<Blivechat>();
+                }
+                // 初始化Bilibili管理器
+                XYLog.LogMessage("初始化弹幕机");
+                Bilibili.Instance.Init();
+                if (Bilibili.CanConnectBili)
+                {
+                    XYLog.LogMessage("连接弹幕机");
+                    Bilibili.Instance.Connect(XYPlugin.Instance.GlobalConfig.DanmakuServiceHost);
+                }
             }
-            else
+            catch(Exception e)
             {
-                Bilibili.Register<Blivechat>();
-            }
-            // 初始化Bilibili管理器
-            Bilibili.Instance.Init();
-            if (Bilibili.CanConnectBili)
-            {
-                Bilibili.Instance.Connect(XYPlugin.Instance.GlobalConfig.DanmakuServiceHost);
+                XYLog.LogError($"弹幕姬初始化失败：{e}");
             }
             if (GlobalConfig.AutoOpenGUI)
             {

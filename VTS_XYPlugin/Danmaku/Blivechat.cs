@@ -16,14 +16,11 @@ namespace VTS_XYPlugin.Danmaku
 
         internal override void InternalInit()
         {
-            if (CanConnectBili)
-            {
-                danmuParser = new BLiveDanmuParser();
-                danmuParser.OnDanmaku += DanmuParser_OnDanmaku;
-                danmuParser.OnGift += DanmuParser_OnGift;
-                danmuParser.OnGuardBuy += DanmuParser_OnGuardBuy;
-                danmuParser.OnSuperChat += DanmuParser_OnSuperChat;
-            }
+            danmuParser = new BLiveDanmuParser();
+            danmuParser.OnDanmaku += DanmuParser_OnDanmaku;
+            danmuParser.OnGift += DanmuParser_OnGift;
+            danmuParser.OnGuardBuy += DanmuParser_OnGuardBuy;
+            danmuParser.OnSuperChat += DanmuParser_OnSuperChat;
         }
 
         public override void Update()
@@ -46,6 +43,7 @@ namespace VTS_XYPlugin.Danmaku
 
         public override void Connect(string host)
         {
+            XYLog.LogMessage($"连接Blivechat:{host}");
             _host = host;
             var uri = new Uri($"ws://{host}");
             client = new WebsocketClient(uri);
@@ -58,11 +56,7 @@ namespace VTS_XYPlugin.Danmaku
         private Task Events_DataReceived(ResponseMessage e)
         {
             string data = e.Text;
-            if (data.StartsWith("XYDanMuShareForCopyLiuDanMuJi;"))
-            {
-                var rawData = data.Replace("XYDanMuShareForCopyLiuDanMuJi;", "");
-                danmuParser.ProcessNotice(rawData);
-            }
+            danmuParser.ProcessNotice(data);
             return Task.CompletedTask;
         }
 

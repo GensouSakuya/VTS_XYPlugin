@@ -50,7 +50,7 @@ namespace VTS_XYPlugin
                     if (_registeredType == null)
                         throw new InvalidOperationException("the singleton has not been registered");
                     GameObject go = new GameObject();
-                    instance = go.AddComponent<T>();
+                    instance = (T)go.AddComponent(_registeredType);
                     go.name = $"[XYPlugin]{_registeredType.Name}";
                     GameObject.DontDestroyOnLoad(go);
                     return instance;
@@ -60,7 +60,7 @@ namespace VTS_XYPlugin
 
         public static void Register<Type>()
         {
-            if (!typeof(Type).IsAssignableFrom(typeof(T)))
+            if (!typeof(T).IsAssignableFrom(typeof(Type)))
                 throw new InvalidOperationException($"type[{typeof(Type).FullName}] is not assigned from type[{typeof(T).FullName}]");
             _registeredType = typeof(Type);
         }

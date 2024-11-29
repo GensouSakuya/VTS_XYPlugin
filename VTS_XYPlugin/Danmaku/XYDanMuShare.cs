@@ -1,11 +1,5 @@
 ﻿using SuperSimpleTcp;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using UnityEngine;
 using VTS_XYPlugin_Common;
 
@@ -21,19 +15,11 @@ namespace VTS_XYPlugin.Danmaku
 
         internal override void InternalInit()
         {
-            if (XYPlugin.CmdArgs.Contains("-nobili"))
-            {
-                CanConnectBili = false;
-                XYLog.LogMessage($"当前已禁用连接Bilibili");
-            }
-            if (CanConnectBili)
-            {
-                danmuParser = new BLiveDanmuParser();
-                danmuParser.OnDanmaku += DanmuParser_OnDanmaku;
-                danmuParser.OnGift += DanmuParser_OnGift;
-                danmuParser.OnGuardBuy += DanmuParser_OnGuardBuy;
-                danmuParser.OnSuperChat += DanmuParser_OnSuperChat;
-            }
+            danmuParser = new BLiveDanmuParser();
+            danmuParser.OnDanmaku += DanmuParser_OnDanmaku;
+            danmuParser.OnGift += DanmuParser_OnGift;
+            danmuParser.OnGuardBuy += DanmuParser_OnGuardBuy;
+            danmuParser.OnSuperChat += DanmuParser_OnSuperChat;
         }
 
         public override void Update()
