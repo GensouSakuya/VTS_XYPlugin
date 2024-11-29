@@ -15,4 +15,5 @@
 [1]:https://github.com/xiaoye97/VTS_XYPlugin/releases
 
 ## 开发
-添加环境变量VTSPath，值为Vtube Studio的路径，如"C:\Program Files (x86)\Steam\steamapps\common\VTube Studio"
+添加环境变量
+- VTSPath，值为Vtube Studio的路径，如"C:\Program Files (x86)\Steam\steamapps\common\VTube Studio"

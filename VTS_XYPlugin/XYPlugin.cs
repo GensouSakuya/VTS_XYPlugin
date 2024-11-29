@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
+using VTS_XYPlugin.Danmaku;
 using VTS_XYPlugin_Common;
 
 namespace VTS_XYPlugin
@@ -185,11 +186,19 @@ namespace VTS_XYPlugin
             DropItemDataBaseWatcher.OnFileModified += OnDropItemConfigFileModified;
             FileHelper.LoadGlobalConfig();
             FileHelper.LoadDropItemConfig();
+            if(XYPlugin.Instance.GlobalConfig.BilibiliDanmakuSource == VTS_XYPlugin_Common.Enum.BilibiliDanmakuSource.XYDanMuShare)
+            {
+                Bilibili.Register<XYDanMuShare>();
+            }
+            else
+            {
+                Bilibili.Register<Blivechat>();
+            }
             // 初始化Bilibili管理器
             Bilibili.Instance.Init();
             if (Bilibili.CanConnectBili)
             {
-                Bilibili.Instance.Connect();
+                Bilibili.Instance.Connect(XYPlugin.Instance.GlobalConfig.DanmakuServiceHost);
             }
             if (GlobalConfig.AutoOpenGUI)
             {

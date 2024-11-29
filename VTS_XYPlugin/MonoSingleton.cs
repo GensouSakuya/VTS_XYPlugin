@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace VTS_XYPlugin
 {
@@ -27,6 +28,41 @@ namespace VTS_XYPlugin
 
         public virtual void Init()
         {
+        }
+    }
+
+    public class RegistrableSingleton<T>:MonoBehaviour where T: RegistrableSingleton<T>
+    {
+        private static T instance;
+
+        private static Type _registeredType;
+
+        public static T Instance
+        {
+            get
+            {
+                if (instance != null)
+                {
+                    return instance;
+                }
+                else
+                {
+                    if (_registeredType == null)
+                        throw new InvalidOperationException("the singleton has not been registered");
+                    GameObject go = new GameObject();
+                    instance = go.AddComponent<T>();
+                    go.name = $"[XYPlugin]{_registeredType.Name}";
+                    GameObject.DontDestroyOnLoad(go);
+                    return instance;
+                }
+            }
+        }
+
+        public static void Register<Type>()
+        {
+            if (!typeof(Type).IsAssignableFrom(typeof(T)))
+                throw new InvalidOperationException($"type[{typeof(Type).FullName}] is not assigned from type[{typeof(T).FullName}]");
+            _registeredType = typeof(Type);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace VTS_XYPlugin_Common
+﻿using VTS_XYPlugin_Common.Enum;
+
+namespace VTS_XYPlugin_Common
 {
     /// <summary>
     /// 全局保存的配置文件
@@ -26,5 +28,9 @@
         public bool DownloadHeadOnRecvGift = true;
 
         public GiftDropConfig GiftDropConfig = new GiftDropConfig();
+
+        public BilibiliDanmakuSource BilibiliDanmakuSource = BilibiliDanmakuSource.Blivechat;
+
+        public string DanmakuServiceHost = "127.0.0.1:9000";
     }
 }
