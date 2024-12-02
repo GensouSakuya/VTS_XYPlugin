@@ -28,8 +28,12 @@ namespace VTS_XYPlugin_Common
         public bool DownloadHeadOnRecvGift = true;
 
         public GiftDropConfig GiftDropConfig = new GiftDropConfig();
+    }
 
-        public BilibiliDanmakuSource BilibiliDanmakuSource = BilibiliDanmakuSource.Blivechat;
+    public class XYGlobalExtensionConfig
+    {
+
+        public BilibiliDanmakuSource BilibiliDanmakuSource = BilibiliDanmakuSource.XYDanMuShare;
 
         public string DanmakuServiceHost = "127.0.0.1:9000";
     }

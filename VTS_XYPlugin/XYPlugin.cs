@@ -39,6 +39,8 @@ namespace VTS_XYPlugin
         /// </summary>
         public XYGlobalConfig GlobalConfig;
 
+        public XYGlobalExtensionConfig GlobalExtensionConfig;
+
         /// <summary>
         /// 掉落物配置
         /// </summary>
@@ -185,11 +187,12 @@ namespace VTS_XYPlugin
             DropItemDataBaseWatcher = new XYFileWatcher(XYPaths.DropItemConfigPath);
             DropItemDataBaseWatcher.OnFileModified += OnDropItemConfigFileModified;
             FileHelper.LoadGlobalConfig();
+            FileHelper.LoadGlobalExtensionConfig();
             FileHelper.LoadDropItemConfig();
 
             try
             {
-                if (XYPlugin.Instance.GlobalConfig.BilibiliDanmakuSource == VTS_XYPlugin_Common.Enum.BilibiliDanmakuSource.XYDanMuShare)
+                if (XYPlugin.Instance.GlobalExtensionConfig.BilibiliDanmakuSource == VTS_XYPlugin_Common.Enum.BilibiliDanmakuSource.XYDanMuShare)
                 {
                     XYLog.LogMessage("注册XYDanMuShare弹幕机");
                     Bilibili.Register<XYDanMuShare>();
@@ -205,7 +208,7 @@ namespace VTS_XYPlugin
                 if (Bilibili.CanConnectBili)
                 {
                     XYLog.LogMessage("连接弹幕机");
-                    Bilibili.Instance.Connect(XYPlugin.Instance.GlobalConfig.DanmakuServiceHost);
+                    Bilibili.Instance.Connect(XYPlugin.Instance.GlobalExtensionConfig.DanmakuServiceHost);
                 }
             }
             catch(Exception e)

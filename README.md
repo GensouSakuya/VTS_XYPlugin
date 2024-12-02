@@ -17,3 +17,10 @@
 ## 开发
 添加环境变量
 - VTSPath，值为Vtube Studio的路径，如"C:\Program Files (x86)\Steam\steamapps\common\VTube Studio"
+
+
+## ps
+因为不会改unity，所以在XYPluginConfig目录下新增了一个GlobalConfig.ext.json用来储存新增的配置
+新增配置如下
+- BilibiliDanmakuSource: 弹幕来源类型，0为默认弹幕姬，1为blivechat插件
+- DanmakuServiceHost: 弹幕来源服务地址，默认"127.0.0.1:9000"，是弹幕姬默认地址

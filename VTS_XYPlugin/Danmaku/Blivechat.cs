@@ -34,7 +34,7 @@ namespace VTS_XYPlugin.Danmaku
                     {
                         reConnectCD = 120;
                         XYLog.LogMessage($"开始尝试重连弹幕机");
-                        _ = client.Stop(System.Net.WebSockets.WebSocketCloseStatus.Empty, "client stop");
+                        //_ = client.Stop(System.Net.WebSockets.WebSocketCloseStatus.Empty, "client stop");
                         Connect(_host);
                     }
                 }
@@ -44,12 +44,21 @@ namespace VTS_XYPlugin.Danmaku
         public override void Connect(string host)
         {
             XYLog.LogMessage($"连接Blivechat:{host}");
-            _host = host;
-            var uri = new Uri($"ws://{host}");
-            client = new WebsocketClient(uri);
-            client.MessageReceived.Subscribe(async (msg) => await Events_DataReceived(msg));
-            client.DisconnectionHappened.Subscribe(async d => await Events_Disconnected(d));
-            _ = client.Start();
+            if(client == null)
+            {
+                _host = host;
+                var uri = new Uri($"ws://{host}");
+                client = new WebsocketClient(uri);
+                client.MessageReceived.Subscribe(async (msg) => await Events_DataReceived(msg));
+                client.DisconnectionHappened.Subscribe(async d => await Events_Disconnected(d));
+                //client.DisconnectionHappened.Subscribe(async ()=>{)
+                _ = client.Start();
+            }
+            else
+            {
+                _ = client.Reconnect();
+            }
+            
             XYLog.LogMessage($"已连接到弹幕广播");
         }
 
@@ -64,7 +73,6 @@ namespace VTS_XYPlugin.Danmaku
         {
             XYLog.LogMessage($"与弹幕广播的连接已断开，即将尝试重连。");
             reConnectCD = 1f;
-            client = null;
             return Task.CompletedTask;
         }
 
@@ -118,6 +126,7 @@ namespace VTS_XYPlugin.Danmaku
                 用户ID = guard.userInfo.uid.ToString(),
                 用户名 = guard.userInfo.userName,
                 开通类型 = guard.guardLevel.ToString().ToJianDuiType(),
+                舰长类型 = guard.guardLevel.ToString().ToJianDuiType(),
                 开通数量 = (int)guard.guardNum,
             };
             MessageCenter.Instance.Send(message);

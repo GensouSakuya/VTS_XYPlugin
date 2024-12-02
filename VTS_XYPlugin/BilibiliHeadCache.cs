@@ -189,6 +189,9 @@ namespace VTS_XYPlugin
         public void OnRecvGift(BGiftMessage message)
         {
             string url = message.头像图片链接;
+            if (string.IsNullOrEmpty(url))
+                return;
+
             if (HeadLinkDict.ContainsKey(message.用户ID))
             {
                 // 如果缓存的数据和传入的数据不一致，说明需要更新

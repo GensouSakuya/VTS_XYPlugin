@@ -28,6 +28,7 @@ namespace VTS_XYPlugin
         public virtual void 当收到礼物(object obj)
         {
             BGiftMessage message = (BGiftMessage)obj;
+            //XYLog.LogMessage($"收到了礼物 {message.礼物名}");
             var dict = XYDropManager.Instance.SearchDropItemByTriggerGift(message.礼物名);
             foreach (var kv in dict)
             {

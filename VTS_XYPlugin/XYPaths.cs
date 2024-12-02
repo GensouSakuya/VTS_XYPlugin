@@ -40,6 +40,15 @@ namespace VTS_XYPlugin
             }
         }
 
+        public static string GlobalExtensionConfigPath
+        {
+            get
+            {
+                string path = $"{XYDirPath}/GlobalConfig.ext.json";
+                return path;
+            }
+        }
+
         public static string DropItemConfigPath
         {
             get

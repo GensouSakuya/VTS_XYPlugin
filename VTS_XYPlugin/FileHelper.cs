@@ -62,6 +62,50 @@ namespace VTS_XYPlugin
             }
         }
 
+        public static void LoadGlobalExtensionConfig()
+        {
+            try
+            {
+                string path = XYPaths.GlobalExtensionConfigPath;
+                XYLog.LogMessage($"加载全局附加配置文件:{path}");
+                if (File.Exists(path))
+                {
+                    string json = FileHelper.ReadAllText(path);
+                    XYPlugin.Instance.GlobalExtensionConfig = JsonConvert.DeserializeObject<XYGlobalExtensionConfig>(json);
+                }
+                if (XYPlugin.Instance.GlobalExtensionConfig == null)
+                {
+                    XYPlugin.Instance.GlobalExtensionConfig = new XYGlobalExtensionConfig();
+                    SaveGlobalExtensionConfig();
+                }
+            }
+            catch (Exception ex)
+            {
+                XYLog.LogError($"{ex}");
+            }
+        }
+        public static void SaveGlobalExtensionConfig()
+        {
+            try
+            {
+                XYLog.LogMessage("开始保存GlobalExtensionConfig");
+                if (XYPlugin.Instance.GlobalExtensionConfig == null)
+                {
+                    XYLog.LogWarning($"GlobalExtensionConfig为空，无法保存");
+                    return;
+                }
+                string path = XYPaths.GlobalExtensionConfigPath;
+                string json = JsonConvert.SerializeObject(XYPlugin.Instance.GlobalExtensionConfig, Formatting.Indented);
+                //XYLog.LogMessage($"保存全局配置文件:{path}\n{json}");
+                //XYPlugin.Instance.GlobalConfigWatcher.IgnoreOnceModify = true;
+                WriteAllText(path, json);
+            }
+            catch (Exception ex)
+            {
+                XYLog.LogError($"{ex}");
+            }
+        }
+
         public static void SaveGlobalConfig()
         {
             try
