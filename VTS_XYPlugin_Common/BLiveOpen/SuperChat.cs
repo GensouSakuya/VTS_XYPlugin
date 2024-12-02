@@ -15,6 +15,11 @@ namespace OpenBLive.Runtime.Data
         [JsonProperty("room_id")] public long roomId;
 
         /// <summary>
+        /// 用户OpenId
+        /// </summary>
+        [JsonProperty("open_id")] public string openId;
+
+        /// <summary>
         /// 购买用户UID
         /// </summary>
         [JsonProperty("uid")] public long uid;
