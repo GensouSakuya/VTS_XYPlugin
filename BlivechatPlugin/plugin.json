@@ -1,0 +1,8 @@
+{
+    "name": "VTS_XYPlugin",
+    "version": "0.0.1",
+    "author": "GensouSakuya",
+    "description": "无",
+    "run": "./BlivechatPlugin",
+    "enabled": true
+}
