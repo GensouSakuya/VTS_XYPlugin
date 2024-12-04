@@ -31,7 +31,41 @@ namespace BlivechatPlugin
 
         public static VTSGiftMessage GenerateByJObj(JObject jobj)
         {
-            var data = jobj["data"].ToArray();
+            var data = jobj["data"];
+            if (data is JArray)
+            {
+                var msg = new VTSGiftMessage
+                {
+                    Data = new VTSGiftBody
+                    {
+                        UserFace = data[1].Value<string>(),
+                        UserName = data[3].Value<string>(),
+                        Paid = data[4].Value<int>() > 0,
+                        Price = data[4].Value<int>(),
+                        GiftName = data[6].Value<string>(),
+                        GiftNum = data[7].Value<int>(),
+                        OpenId = data[10].Value<string>(),
+                    }
+                };
+                return msg;
+            }
+            else
+            {
+                var msg = new VTSGiftMessage
+                {
+                    Data = new VTSGiftBody
+                    {
+                        UserFace = data["avatarUrl"].Value<string>(),
+                        UserName = data["authorName"].Value<string>(),
+                        Paid = data["totalCoin"].Value<int>() > 0,
+                        Price = data["totalCoin"].Value<int>(),
+                        GiftName = data["giftName"].Value<string>(),
+                        GiftNum = data["num"].Value<int>(),
+                        OpenId = data["uid"].Value<string>(),
+                    }
+                };
+                return msg;
+            }
 
             //'id': uuid.uuid4().hex,
             //'avatarUrl': avatar_url,
@@ -47,20 +81,6 @@ namespace BlivechatPlugin
             //'privilegeType': message.guard_level,
             //'medalLevel': 0,
             //'medalName': '',
-            var msg = new VTSGiftMessage
-            {
-                Data = new VTSGiftBody
-                {
-                    UserFace = data[1].Value<string>(),
-                    UserName = data[3].Value<string>(),
-                    Paid = data[4].Value<int>() > 0,
-                    Price = data[4].Value<int>(),
-                    GiftName = data[6].Value<string>(),
-                    GiftNum = data[7].Value<int>(),
-                    OpenId = data[10].Value<string>(),
-                }
-            };
-            return msg;
         }
     }
 
@@ -90,7 +110,43 @@ namespace BlivechatPlugin
 
         public static VTSGuardMessage GenerateByJObj(JObject jobj)
         {
-            var data = jobj["data"].ToArray();
+            var data = jobj["data"];
+            if (data is JArray)
+            {
+                var msg = new VTSGuardMessage
+                {
+                    Data = new VTSGuardBody
+                    {
+                        UserInfo = new VTSUserInfoBody
+                        {
+                            OpenId = data[8].Value<string>(),
+                            UserFace = data[1].Value<string>(),
+                            UserName = data[3].Value<string>(),
+                        },
+                        GuardLevel = data[4].Value<int>(),
+                        GuardNum = data[5].Value<int>(),
+                    }
+                };
+                return msg;
+            }
+            else
+            {
+                var msg = new VTSGuardMessage
+                {
+                    Data = new VTSGuardBody
+                    {
+                        UserInfo = new VTSUserInfoBody
+                        {
+                            OpenId = data["uid"].Value<string>(),
+                            UserFace = data["avatarUrl"].Value<string>(),
+                            UserName = data["authorName"].Value<string>(),
+                        },
+                        GuardLevel = data["privilegeType"].Value<int>(),
+                        GuardNum = data["num"].Value<int>(),
+                    }
+                };
+                return msg;
+            }
             //'id': uuid.uuid4().hex,
             //'avatarUrl': avatar_url,
             //'timestamp': message.start_time,
@@ -102,21 +158,6 @@ namespace BlivechatPlugin
             //'uid': str(message.uid) if message.uid != 0 else message.username,
             //'medalLevel': 0,
             //'medalName': '',
-            var msg = new VTSGuardMessage
-            {
-                Data = new VTSGuardBody
-                {
-                    UserInfo = new VTSUserInfoBody
-                    {
-                        OpenId = data[8].Value<string>(),
-                        UserFace = data[1].Value<string>(),
-                        UserName = data[3].Value<string>(),
-                    },
-                    GuardLevel = data[4].Value<int>(),
-                    GuardNum = data[5].Value<int>(),
-                }
-            };
-            return msg;
         }
     }
 
